@@ -12,7 +12,6 @@ function formController(){
     return{
         signup(req,res){
             const{username,email,password}=req.body
-            console.log('req.body',req.body);
             if(!email || !password || !username){
               return res.status(422).json({error:"please add all fields"})
             }else{
@@ -28,7 +27,7 @@ function formController(){
                               
                           })
                           user.save().then((user)=>{
-                              console.log('user',user);
+
                               return res.json({message:'New user created successfully'})
                           }).catch((err)=>{
                               console.log('err 1',err);

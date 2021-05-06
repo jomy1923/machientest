@@ -27,7 +27,8 @@ const AddProduct = () => {
     const cat= e =>{
         setCategory(e.label)
     }
-    const postDetails = ()=>{
+    const postDetails = ()=>(
+        
         
         fetch('/AddProduct',{
             method:'post',
@@ -48,14 +49,14 @@ const AddProduct = () => {
             if(data.error){
                 M.toast({html:data.error,classes:"#f44336 red"})
             }else{
-                M.toast({html:data.message,classes:"#ffa000 amber darken-2"})
+                M.toast({html:'product added successfully',classes:"#ffa000 amber darken-2"})
                 
-                history.push('/signIn ')
+                history.push('/Dashboard')
             }
         }).catch(err=>{
             console.log('ertyu',err)
         })
-    }
+        )
     return (
         <div className='myCardP' >
            
@@ -63,22 +64,21 @@ const AddProduct = () => {
             <div>
                 <h2>Add Product</h2>
             </div>
-                <form action='' className='from'>
                     <div>
                         <div>
                             <input type='text' placeholder='Product Name' 
                             value={ProductName} onChange={(e)=>setName(e.target.value)}/>
-                            <label for='ProductName'></label>
+                            <label htmlFor='ProductName'></label>
                         </div>
                         <div>
                             <input type='text' placeholder='Price' 
                             value={Price} onChange={(e)=>setPrice(e.target.value)}/>
-                            <label for='Price'></label>
+                            <label htmlFor='Price'></label>
                         </div>
                         <div>
                             <input type='text' placeholder='Quantity'
                             value={Quantity} onChange={(e)=>setQuantity(e.target.value)} />
-                            <label for='Quantity'></label>
+                            <label htmlFor='Quantity'></label>
                         </div>
                         <div>
                             <div style={{paddingLeft:'250px'}}>
@@ -92,7 +92,6 @@ const AddProduct = () => {
                         
                     </div>
 
-                </form>
 
             </div>
         </div>

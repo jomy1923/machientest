@@ -1,5 +1,80 @@
+import React, { useState, useEffect ,useRef} from 'react'
 import { Link } from 'react-router-dom'
+import M from 'materialize-css'
+import Select from 'react-select'
+
 const Dashboard = () => {
+  var selectionList =[
+    {
+        value:1,
+        label:'Phone'
+    },
+    {
+        value:2,
+        label:'Smart Watches'
+    },
+    {
+        value:2,
+        label:'Air Pods'
+    }
+]
+  const [search,setSearch] = useState('')
+  const searchModel = useRef(null)
+  const [Data, setData] = useState([])
+  const [Products, setProducts] = useState([])
+  const [productDetails,setProductDetails]=useState([])
+  const [category,setCategory] = useState(selectionList.label)
+    const cat= e =>{
+        setCategory(e.label)
+    }
+    
+  
+  useEffect(()=>{
+    M.Modal.init(searchModel.current)
+  },[])
+
+
+  useEffect(() => {
+    fetch('/Dashboard', {
+      headers: {
+        Authorization: 'sunday ' + localStorage.getItem('jwt')
+      }
+    }).then(res => res.json())
+      .then((result) => {
+
+        setData(result.Products)
+      })
+  }, [])
+  useEffect(() => {
+    fetch('/limited', {
+      headers: {
+        Authorization: 'sunday ' + localStorage.getItem('jwt')
+      }
+    }).then(res => res.json())
+      .then((Products) => {
+        console.log('Products', Products);
+        setProducts(Products.Products)
+      })
+  }, [])
+
+  const fetchProducts=(query)=>{
+    setSearch(query)
+    fetch('/Search',{
+      method:'post',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        query
+      })
+    }).then(res=>res.json())
+    .then(results=>{
+      
+      setProductDetails(results.product)
+    })
+  }
+
+
   return (
     <div>
       <div className='myCardD' >
@@ -12,27 +87,18 @@ const Dashboard = () => {
           </div>
           <div style={{ display: 'flex', marginTop: '20px' }}>
             <div style={{ marginLeft: '150px' }} >
-              <form>
-                <div style={{ width: '150px' }}>
-                  <div className="input-field">
-                    <input id="email" type="email" placeholder='search' className="validate" />
-                    <label for="email" ></label>
-                  </div>
-                </div>
-              </form>
+             
+                
+             
             </div>
-            <div className="input-field col s12" style={{ marginLeft: '30px' }}>
-              <select className="browser-default">
-                <option value="" disabled selected >Category</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
-              </select>
+            <div className="input-field col s12" style={{ paddingLeft:'30px', paddingBottom:'30px', width:'200px'}}>
+            <Select options={selectionList} defaultValue onChange={cat}/>
             </div>
             <div style={{ paddingTop: '20px', marginLeft: '10px' }}>
-              <Link to='/AddProduct'>
-                <button className="btn waves-effect waves-light #f48fb1 pink lighten-3">Search
-                </button></Link>
+             
+                <button className="btn waves-effect waves-light #f48fb1 pink lighten-3 modal-trigger" 
+                data-target="modal1" >Search
+                </button>
             </div>
           </div>
           <div style={{ width: '600px', margin: '26px auto' }}>
@@ -45,86 +111,86 @@ const Dashboard = () => {
                   <th>Actions</th>
                 </tr>
               </thead>
+              {
+                Data.map((item) => {
+                  return (
+                    <tbody key={item._id}>
+                      <tr>
+                        <td>{item.ProductName}</td>
+                        <td>{item.Price}</td>
+                        <td> <div style={{ display: 'flex' }}>
+                          <div style={{ paddingRight: '20px' }}>
+                            <Link to='/Edit'>
+                              <button className="waves-effect waves-light btn-small #f48fb1 pink lighten-3">Edit
+                    </button></Link>
+                          </div>
+                          <Link to='/Delete'>
+                            <button className=" waves-effect waves-light btn-small #f48fb1 pink lighten-3">Delete
+                    </button></Link>
+                        </div>
 
-              <tbody>
-                <tr>
-                  <td>Alvin</td>
-                  <td>Eclair</td>
-                  <td> <div style={{ display: 'flex' }}>
-                    <div style={{ paddingRight: '20px' }}>
-                      <Link to='/Edit'>
-                        <button className="waves-effect waves-light btn-small #f48fb1 pink lighten-3">Edit
-                </button></Link>
-                    </div>
-                    <Link to='/Delete'>
-                      <button className=" waves-effect waves-light btn-small #f48fb1 pink lighten-3">Delete
-                </button></Link>
-                  </div>
+                        </td>
 
-                  </td>
+                      </tr>
 
-                </tr>
+                    </tbody>
+                  )
+                })
+              }
 
-              </tbody>
             </table>
           </div>
         </div>
       </div>
-      <h5 style={{marginLeft:'235px'}}>Latest Products</h5>
-      <div style={{ maxWidth: '300', paddingLeft: '240px', display: 'flex' }}>
-        <div style={{ maxWidth: '200px' }}>
-          <div className="card horizontal">
-            <div className="card-stacked">
-              <div className="card-content">
-                <h6>product name</h6>
-                <h6>$price</h6>
+      <h5 style={{ marginLeft: '185px' }}>Latest Products</h5>
+      <div style={{ paddingLeft: '190px', display: 'flex' }}>
+
+
+        {
+          Products.map((items) => {
+            return (
+              <div style={{ paddingLeft: '90px', display: 'flex' }}>
+                <div className='cardL' key={items._id}>
+                  <div className="card horizontal">
+                    <div className="card-stacked">
+                      <div className="card-content">
+                        <h6>{items.ProductName}</h6>
+                        <h6>RS-{items.Price}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+
+            )
+          })
+        }
+
+
+      </div>
+      <div>
+
+
+        <div id="modal1" className="modal" ref={searchModel}>
+          <div className="modal-content">
+                  <div>
+                   <input type='text' placeholder='search' 
+                   value={search} onChange={(e)=>fetchProducts(e.target.value)} />
+              <label htmlFor='search'></label>
+                        </div>
+          <ul className="collection">
+           {productDetails.map(item=>{
+             return <li className='collection-item'>{item.ProductName}</li>
+           })}
+
+    </ul>
           </div>
-        </div>
-        <div style={{ maxWidth: '200px' }}>
-          <div className="card horizontal">
-            <div className="card-stacked">
-              <div className="card-content">
-                <h6>product name</h6>
-                <h6>$price</h6>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style={{ maxWidth: '200px' }}>
-          <div className="card horizontal">
-            <div className="card-stacked">
-              <div className="card-content">
-                <h6>product name</h6>
-                <h6>$price</h6>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style={{ maxWidth: '200px' }}>
-          <div className="card horizontal">
-            <div className="card-stacked">
-              <div className="card-content">
-                <h6>product name</h6>
-                <h6>$price</h6>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style={{ maxWidth: '200px' }}>
-          <div className="card horizontal">
-            <div className="card-stacked">
-              <div className="card-content">
-                <h6>product name</h6>
-                <h6>$price</h6>
-              </div>
-            </div>
+          <div className="modal-footer">
+            <button  className="modal-close waves-effect waves-green btn-flat" onclick={()=>setSearch('')}>close</button>
           </div>
         </div>
 
       </div>
-
 
     </div>
 

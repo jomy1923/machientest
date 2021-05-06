@@ -12,9 +12,7 @@ function productController(){
             })
         },
         AddProduct(req,res){
-            
             const{ProductName,Price,Quantity,Category}= req.body
-            console.log('ProductName,Price,Quantity,Category',ProductName,Price,Quantity,Category);
             if(!ProductName || !Price || !Quantity || !Category){
                return res.json({error:'please enter all the fields in it'})
             }else{
@@ -34,6 +32,26 @@ function productController(){
                 })
                 
             }
+        },
+        limit(req,res){
+            Product.find().sort({'updatedAt':'desc'}).limit(4)
+            .exec((err,Products)=>{
+                if(err){
+                    return res.json({message:'NO products'})
+                }
+                return res.json({Products})
+            })
+             
+        },
+        Search(req,res){
+            let productPattern = new RegExp('^'+req.body.query)
+            Product.find({ProductName:{$regex:productPattern}})
+            .then(product=>{
+                res.json({product})
+                
+            }).catch(err=>{
+                console.log(err);
+            })
         }
 
 

@@ -5,21 +5,23 @@ import Signup from './components/screens/Signup'
 import Login from './components/screens/signIn'
 import Dashboard from './components/screens/Dashboard'
 import AddProduct from './components/screens/AddProduct'
+
 function App() {
   return (
     <BrowserRouter>
     <Route exact path='/'>
       <Signup/>
     </Route>
-    <Route path='/signIn'>
+    <Route exact path='/signIn'>
     <Login/>
     </Route>
-    <Route path='/Dashboard'>
+    <Route exact path='/Dashboard'>
       <Dashboard/>
     </Route>
-    <Route path='/AddProduct'>
+    <Route exact path='/AddProduct'>
       <AddProduct/>
     </Route>
+   
 
     </BrowserRouter>
   );

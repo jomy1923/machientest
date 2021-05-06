@@ -23,6 +23,6 @@ const productSchema = new mongoose.Schema({
         type:ObjectId,
         ref:"User"
     }
-})
+},{timestamps:true})
 
 mongoose.model('Product',productSchema)
