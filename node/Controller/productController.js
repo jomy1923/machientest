@@ -52,10 +52,30 @@ function productController(){
             }).catch(err=>{
                 console.log(err);
             })
+        },
+        DeleteProduct(req,res){
+          
+            const proId = req.params.id
+            Product.deleteOne({_id:proId}).exec((err,data)=>{
+                if(err){
+                    res.json({error:'not permitted'})
+                }else{
+                    res.json({message:'deleted successfully'})
+                }
+            })
+        },
+        editProduct(req,res){
+            const proId = req.params.id
+            console.log('proId',proId);
+            Product.findOne({id:proId}).then((Product)=>{
+                console.log(Product);
+                res.json({Product})
+            }).catch((err)=>{
+                console.log((err));
+                
+            })
+    
         }
-
-
-
 
     }
 }

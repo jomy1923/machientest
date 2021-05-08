@@ -1,14 +1,17 @@
 
 import './App.css';
-import {BrowserRouter,Route} from 'react-router-dom'
+import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import Signup from './components/screens/Signup'
 import Login from './components/screens/signIn'
 import Dashboard from './components/screens/Dashboard'
 import AddProduct from './components/screens/AddProduct'
+import EditProduct from './components/screens/EditProduct'
+
 
 function App() {
   return (
     <BrowserRouter>
+    <Switch>
     <Route exact path='/'>
       <Signup/>
     </Route>
@@ -21,7 +24,10 @@ function App() {
     <Route exact path='/AddProduct'>
       <AddProduct/>
     </Route>
-   
+    <Route exact path='/EditProduct/:id'>
+      <EditProduct/>
+    </Route>
+    </Switch>
 
     </BrowserRouter>
   );

@@ -1,9 +1,12 @@
 import React, { useState, useEffect ,useRef} from 'react'
-import { Link } from 'react-router-dom'
+import { Link }  from 'react-router-dom'
 import M from 'materialize-css'
 import Select from 'react-select'
 
+
 const Dashboard = () => {
+  
+  
   var selectionList =[
     {
         value:1,
@@ -18,6 +21,7 @@ const Dashboard = () => {
         label:'Air Pods'
     }
 ]
+
   const [search,setSearch] = useState('')
   const searchModel = useRef(null)
   const [Data, setData] = useState([])
@@ -52,7 +56,7 @@ const Dashboard = () => {
       }
     }).then(res => res.json())
       .then((Products) => {
-        console.log('Products', Products);
+        
         setProducts(Products.Products)
       })
   }, [])
@@ -73,6 +77,34 @@ const Dashboard = () => {
       setProductDetails(results.product)
     })
   }
+
+  
+
+  const deleteName=(id)=>{
+    console.log('dddddd',JSON.stringify(id));
+    fetch(`/DeleteProduct/${id}`,{
+      method:'post',
+      headers:{
+        
+        'Content-Type':'application/json'
+      }
+    }).then(res=>res.json())
+    .then(data=>{
+     
+        if(data.error){
+            M.toast({html:data.error,classes:"#f44336 red"})
+        }else{
+            M.toast({html:data.message,classes:"#ffa000 amber darken-2"})
+           
+        
+        }
+    }).catch(err=>{
+        console.log('ertyu',err)
+    })
+  }
+
+
+
 
 
   return (
@@ -120,13 +152,15 @@ const Dashboard = () => {
                         <td>{item.Price}</td>
                         <td> <div style={{ display: 'flex' }}>
                           <div style={{ paddingRight: '20px' }}>
-                            <Link to='/Edit'>
-                              <button className="waves-effect waves-light btn-small #f48fb1 pink lighten-3">Edit
+                           
+                             <Link to={`/EditProduct/${item._id}`}> <button className="waves-effect waves-light btn-small #f48fb1 pink lighten-3">Edit
+                              
                     </button></Link>
                           </div>
-                          <Link to='/Delete'>
-                            <button className=" waves-effect waves-light btn-small #f48fb1 pink lighten-3">Delete
-                    </button></Link>
+                         
+                            <button className=" waves-effect waves-light btn-small #f48fb1 pink lighten-3" 
+                            onClick={()=>deleteName(item._id)}>Delete
+                    </button>
                         </div>
 
                         </td>
@@ -186,7 +220,7 @@ const Dashboard = () => {
     </ul>
           </div>
           <div className="modal-footer">
-            <button  className="modal-close waves-effect waves-green btn-flat" onclick={()=>setSearch('')}>close</button>
+            <button  className="modal-close waves-effect waves-green btn-flat" onClick={()=>setSearch('')}>close</button>
           </div>
         </div>
 

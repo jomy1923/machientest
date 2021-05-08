@@ -1,10 +1,11 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect,useParams} from 'react'
 import {useHistory} from 'react-router-dom'
 import M from 'materialize-css'
 import Select from 'react-select'
 
-const AddProduct = () => {
-    
+const EditProduct = () => {
+    const { id } = useParams()
+    console.log('ddd',id);
     var selectionList =[
         {
             value:1,
@@ -19,6 +20,20 @@ const AddProduct = () => {
             label:'Air Pods'
         }
     ]
+    const [Data, setData] = useState([])
+    
+    useEffect(() => {
+      
+        // fetch(`/EditProduct/${id}`, {
+        //   headers: {
+        //     'Content-Type':'application/json'
+        //   }
+        // }).then(res => res.json())
+        //   .then((result) => {
+    
+        //     setData(result.Products)
+        //   })
+      }, [])
     
     const history = useHistory()
     const [ProductName,setName] = useState('')
@@ -31,7 +46,7 @@ const AddProduct = () => {
     const postDetails = ()=>(
         
         
-        fetch('/AddProduct',{
+        fetch('/EditProduct',{
             method:'post',
             headers:{
                 'Content-Type':'application/json',
@@ -63,7 +78,7 @@ const AddProduct = () => {
            
             <div className="card auth-card">
             <div>
-                <h2>Add Product</h2>
+                <h2>Edit Product</h2>
             </div>
                     <div>
                         <div>
@@ -87,7 +102,8 @@ const AddProduct = () => {
                             </div>
                         </div>
                         <div style={{paddingRight:'40px'}}>
-                        <button className="btn waves-effect waves-light #2196f3 blue" onClick={()=>postDetails()}>Add Product
+                        <button className="btn waves-effect waves-light #2196f3 blue" onClick={()=>postDetails()}>
+                            edit Product
                 </button>
                         </div>
                         
@@ -100,4 +116,4 @@ const AddProduct = () => {
 
 }
 
-export default AddProduct
+export default EditProduct

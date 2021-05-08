@@ -7,9 +7,11 @@ const requiredLogin = require('../middleware/requiredLogin')
 router.get('/Dashboard',requiredLogin,productController().dashboard)
 router.post('/AddProduct',requiredLogin,productController().AddProduct)
 // router.post('/EditProduct',productController().EditProduct)
-// router.post('/DeleteProduct',productController().DeleteProduct)
+router.post('/DeleteProduct/:id',productController().DeleteProduct)
 router.get('/limited',requiredLogin,productController().limit)
 router.post('/Search',productController().Search)
+router.get('/EditProduct/:id',productController().editProduct)
+
 
 
 
