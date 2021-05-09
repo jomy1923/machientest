@@ -11,10 +11,7 @@ router.post('/DeleteProduct/:id',productController().DeleteProduct)
 router.get('/limited',requiredLogin,productController().limit)
 router.post('/Search',productController().Search)
 router.get('/EditProduct/:id',productController().editProduct)
-
-
-
-
+router.post('/filterProduct/',productController().filterProduct)
 
 
 module.exports = router

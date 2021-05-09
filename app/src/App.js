@@ -27,6 +27,9 @@ function App() {
     <Route exact path='/EditProduct/:id'>
       <EditProduct/>
     </Route>
+    <Route exact path='/filterProduct/:id'>
+      <Dashboard/>
+    </Route>
     </Switch>
 
     </BrowserRouter>

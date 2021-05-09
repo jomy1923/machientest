@@ -123,10 +123,10 @@ const Dashboard = () => {
                 
              
             </div>
-            <div className="input-field col s12" style={{ paddingLeft:'30px', paddingBottom:'30px', width:'200px'}}>
+            <div className="input-field col s12" style={{ paddingLeft:'30px', paddingBottom:'90px', width:'150px'}}>
             <Select options={selectionList} defaultValue onChange={cat}/>
             </div>
-            <div style={{ paddingTop: '20px', marginLeft: '10px' }}>
+            <div style={{ paddingTop: '20px', marginLeft: '50px' }}>
              
                 <button className="btn waves-effect waves-light #f48fb1 pink lighten-3 modal-trigger" 
                 data-target="modal1" >Search
@@ -153,12 +153,12 @@ const Dashboard = () => {
                         <td> <div style={{ display: 'flex' }}>
                           <div style={{ paddingRight: '20px' }}>
                            
-                             <Link to={`/EditProduct/${item._id}`}> <button className="waves-effect waves-light btn-small #f48fb1 pink lighten-3">Edit
+                             <Link to={`/EditProduct/${item._id}`}> <button className="waves-effect waves-light btn-small #7e57c2 deep-purple lighten-1">Edit
                               
                     </button></Link>
                           </div>
                          
-                            <button className=" waves-effect waves-light btn-small #f48fb1 pink lighten-3" 
+                            <button className=" waves-effect waves-light btn-small #d50000 red accent-4" 
                             onClick={()=>deleteName(item._id)}>Delete
                     </button>
                         </div>
@@ -214,7 +214,11 @@ const Dashboard = () => {
                         </div>
           <ul className="collection">
            {productDetails.map(item=>{
-             return <li className='collection-item'>{item.ProductName}</li>
+             return(
+               <li className='collection-item'>{item.ProductName}</li>
+               
+             )
+             
            })}
 
     </ul>

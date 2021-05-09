@@ -96,6 +96,19 @@ function productController(){
                 })
             }
             
+        },
+        filterProduct(req,res){
+           
+            let category=req.body
+            
+            Product.find({category:category}).then((Products)=>{
+                if(Products){
+                    res.json({Products})
+                }else{
+                    // res.json({error:'not found any Products'})
+                    console.log('err');
+                }
+            })
         }
 
     }
