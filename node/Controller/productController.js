@@ -66,15 +66,36 @@ function productController(){
         },
         editProduct(req,res){
             const proId = req.params.id
-            console.log('proId',proId);
-            Product.findOne({id:proId}).then((Product)=>{
-                console.log(Product);
+            Product.findOne({_id:proId}).then((Product)=>{
                 res.json({Product})
             }).catch((err)=>{
                 console.log((err));
                 
             })
     
+        },
+      async  updateProduct(req,res){
+            const proId = req.params.id
+            console.log('proId',proId);
+            const{ProductName,Price,Quantity,Category}= req.body
+            if(!ProductName || !Price || !Quantity || !Category){
+               return res.json({error:'please enter all the fields in it'})
+            }else{
+                
+                let editedPro= await Product.findOne({_id:proId})
+                editedPro.ProductName=ProductName,
+                editedPro.Price=Price,
+                editedPro.Quantity=Quantity,
+                editedPro.Category=Category
+                editedPro.save((err,data)=>{
+                    if(err){
+                        return res.json(err)
+                    }else{
+                        return res.json(data)
+                    }
+                })
+            }
+            
         }
 
     }

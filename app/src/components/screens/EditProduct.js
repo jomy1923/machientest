@@ -1,11 +1,16 @@
-import React,{useState,useEffect,useParams} from 'react'
-import {useHistory} from 'react-router-dom'
+import React,{useState,useEffect} from 'react'
+import {useHistory,useParams} from 'react-router-dom'
 import M from 'materialize-css'
 import Select from 'react-select'
 
 const EditProduct = () => {
     const { id } = useParams()
-    console.log('ddd',id);
+    const history = useHistory()
+    const [ProductName,setName] = useState('')
+    const [Price,setPrice] = useState('')
+    const [Quantity,setQuantity] = useState('')
+    console.log('djhj',id);
+    
     var selectionList =[
         {
             value:1,
@@ -20,25 +25,24 @@ const EditProduct = () => {
             label:'Air Pods'
         }
     ]
-    const [Data, setData] = useState([])
-    
+   
     useEffect(() => {
       
-        // fetch(`/EditProduct/${id}`, {
-        //   headers: {
-        //     'Content-Type':'application/json'
-        //   }
-        // }).then(res => res.json())
-        //   .then((result) => {
-    
-        //     setData(result.Products)
-        //   })
+        fetch(`/EditProduct/${id}`, {
+          headers: {
+            'Content-Type':'application/json'
+          }
+        }).then(res => res.json())
+          .then((result) => {
+            
+            setName(result.Product.ProductName)
+            setPrice(result.Product.Price)
+            setQuantity(result.Product.Quantity)
+            
+          })
       }, [])
     
-    const history = useHistory()
-    const [ProductName,setName] = useState('')
-    const [Price,setPrice] = useState('')
-    const [Quantity,setQuantity] = useState('')
+   
     const [Category,setCategory] = useState(selectionList.label)
     const cat= e =>{
         setCategory(e.label)
@@ -46,7 +50,7 @@ const EditProduct = () => {
     const postDetails = ()=>(
         
         
-        fetch('/EditProduct',{
+        fetch(`/updateProduct/${id}`,{
             method:'post',
             headers:{
                 'Content-Type':'application/json',
@@ -65,7 +69,7 @@ const EditProduct = () => {
             if(data.error){
                 M.toast({html:data.error,classes:"#f44336 red"})
             }else{
-                M.toast({html:'product added successfully',classes:"#ffa000 amber darken-2"})
+                M.toast({html:'product Updated Successfully',classes:"#ffa000 amber darken-2"})
                 
                 history.push('/Dashboard')
             }
@@ -80,6 +84,7 @@ const EditProduct = () => {
             <div>
                 <h2>Edit Product</h2>
             </div>
+            
                     <div>
                         <div>
                             <input type='text' placeholder='Product Name' 
@@ -103,7 +108,7 @@ const EditProduct = () => {
                         </div>
                         <div style={{paddingRight:'40px'}}>
                         <button className="btn waves-effect waves-light #2196f3 blue" onClick={()=>postDetails()}>
-                            edit Product
+                            Update Product
                 </button>
                         </div>
                         
